@@ -11,6 +11,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: opentofu/setup-opentofu@v1
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::211125613635:role/gchamontuta-github #change to reflect your IAM role’s ARN
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: us-east-1
+    - name: Sts GetCallerIdentity
+      run: |
+        aws sts get-caller-identity
 
     - name: OpenTofu fmt
       id: fmt
