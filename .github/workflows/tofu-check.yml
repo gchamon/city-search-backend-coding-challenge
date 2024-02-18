@@ -16,6 +16,8 @@ jobs:
         working-directory: "./infrastructure"
     steps:
     - uses: actions/checkout@v3
+    - uses: 8BitJonny/gh-get-current-pr@3.0.0
+      id: PR
     - uses: opentofu/setup-opentofu@v1
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v4
@@ -46,7 +48,7 @@ jobs:
       continue-on-error: true
 
     - uses: actions/github-script@v6
-      if: github.event_name == 'pull_request'
+      if: steps.PR.outputs.number != null
       env:
         PLAN: "tofu\n${{ steps.plan.outputs.stdout }}"
       with:
