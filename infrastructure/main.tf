@@ -108,6 +108,7 @@ module "alb" {
       fixed_response = {
         status_code  = 404
         message_body = "not found"
+        content_type = "text/plain"
       }
     }
   }
