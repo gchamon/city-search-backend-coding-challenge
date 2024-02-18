@@ -6,7 +6,7 @@ def load_catalog(catalog_filename):
         return list(catalog)
 
 def query_name(catalog, query):
-    return []
+    return sorted([city for city in catalog if query in city["name"]], key=lambda x: x["name"])
 
 if __name__ == "__main__":
     canada_catalog = load_catalog("data/cities_canada-usa.tsv")

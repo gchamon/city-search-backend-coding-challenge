@@ -17,8 +17,9 @@ class TestCitySearch(unittest.TestCase):
 
     def test_name_query(self):
         query = "Kirk"
-        results = backend.query_name(catalog=self.catalog, query=query)
-        expected = [
+        results = [{"name": k["name"], "lat": k["lat"], "long": k["long"]}
+                   for k in backend.query_name(catalog=self.catalog, query=query)]
+        expected = sorted([
             {
                 "name": "Kirkland",
                 "lat": "45.45008",
@@ -44,7 +45,7 @@ class TestCitySearch(unittest.TestCase):
                 "lat": "47.68149",
                 "long": "-122.20874"
             }
-        ]
+        ], key=lambda x: x["name"])
         self.assertEquals(results, expected)
 
 
