@@ -1,0 +1,46 @@
+name: OpenTofu Check
+on:
+  push:
+    branches:
+      - master
+permissions:
+  pull-requests: write
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+env:
+  TF_VAR_delegation_set_id: ${{ vars.DELEGATION_SET_ID }}
+  TF_VAR_route53_zone: ${{ vars.ROUTE53_ZONE }}
+  TF_VAR_aws_region: ${{ vars.AWS_REGION }}
+jobs:
+  tofu:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "./infrastructure"
+    steps:
+    - uses: actions/checkout@v3
+    - uses: 8BitJonny/gh-get-current-pr@3.0.0
+      id: PR
+    - uses: opentofu/setup-opentofu@v1
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::211125613635:role/gchamontuta-github #change to reflect your IAM role’s ARN
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: us-east-1
+    - name: Sts GetCallerIdentity
+      run: |
+        aws sts get-caller-identity
+
+    - name: OpenTofu Init
+      id: init
+      run: tofu init
+
+    - name: OpenTofu Validate
+      id: validate
+      run: tofu validate -no-color
+
+    - name: OpenTofu Apply
+      id: apply
+      run: tofu apply -auto-approve
+
