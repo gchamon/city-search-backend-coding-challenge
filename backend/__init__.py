@@ -1,6 +1,6 @@
 import flask
 
-from backend_lib import CANADA_CATALOG, query_name, filter_query_results_attributes, EmptyQueryError
+from backend.lib import CANADA_CATALOG, query_name, filter_query_results_attributes, EmptyQueryError
 
 app = flask.Flask(__name__)
 
