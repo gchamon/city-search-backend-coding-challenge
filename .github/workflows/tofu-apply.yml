@@ -1,4 +1,4 @@
-name: OpenTofu Check
+name: OpenTofu Apply
 on:
   push:
     branches:
