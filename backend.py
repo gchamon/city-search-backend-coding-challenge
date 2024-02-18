@@ -1,12 +1,18 @@
 import csv
 
+class EmptyQueryError(Exception):
+    pass
+
 def load_catalog(catalog_filename):
     with open(catalog_filename) as catalog_fp:
         catalog = csv.DictReader(catalog_fp, delimiter="\t", quoting=csv.QUOTE_NONE)
         return list(catalog)
 
 def query_name(catalog, query):
-    return sorted([city for city in catalog if query in city["name"]], key=lambda x: x["name"])
+    if query:
+        return sorted([city for city in catalog if query in city["name"]], key=lambda x: x["name"])
+    else:
+        raise EmptyQueryError()
 
 if __name__ == "__main__":
     canada_catalog = load_catalog("data/cities_canada-usa.tsv")

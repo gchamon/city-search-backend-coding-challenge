@@ -48,6 +48,17 @@ class TestCitySearch(unittest.TestCase):
         ], key=lambda x: x["name"])
         self.assertEquals(results, expected)
 
+    def test_name_query_empty_result(self):
+        query="Azpilicuetagaraycosaroyarenberecolarrea"
+        results = backend.query_name(self.catalog, query=query)
+        expected = []
+        self.assertEquals(results, expected)
+
+    def test_name_empty_query(self):
+        with self.assertRaises(backend.EmptyQueryError):
+            query = ""
+            backend.query_name(self.catalog, query=query)
+
 
 if __name__ == '__main__':
     unittest.main()
