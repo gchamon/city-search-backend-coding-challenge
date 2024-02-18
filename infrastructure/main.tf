@@ -55,6 +55,16 @@ module "vpc" {
   enable_vpn_gateway = true
 }
 
+module "s3_bucket_alb_logs" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+
+  bucket = "gchamon-alb-logs"
+  acl    = "private"
+
+  control_object_ownership = true
+  object_ownership         = "ObjectWriter"
+}
+
 module "alb" {
   source = "terraform-aws-modules/alb/aws"
 
@@ -87,7 +97,7 @@ module "alb" {
   }
 
   access_logs = {
-    bucket = "my-alb-logs"
+    bucket = module.s3_bucket_alb_logs.s3_bucket_id
   }
 
   listeners = {
