@@ -51,7 +51,7 @@ jobs:
       continue-on-error: true
 
     - uses: actions/github-script@v6
-      if: steps.PR.outputs.number != null
+      if: github.event_name == 'pull_request'
       env:
         PLAN: "tofu\n${{ steps.plan.outputs.stdout }}"
       with:
@@ -81,9 +81,8 @@ jobs:
           *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
 
           github.rest.issues.createComment({
-            issue_number: ${{ steps.PR.outputs.number }},
+            issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
             body: output
           })
-
