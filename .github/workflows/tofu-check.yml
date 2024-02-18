@@ -5,9 +5,9 @@ permissions:
   id-token: write   # This is required for requesting the JWT
   contents: read    # This is required for actions/checkout
 env:
-  TF_VAR_delegation_set_id: ${{ env.DELEGATION_SET_ID }}
-  TF_VAR_route53_zone: ${{ env.ROUTE53_ZONE }}
-  TF_VAR_aws_region: ${{ env.AWS_REGION }}
+  TF_VAR_delegation_set_id: ${{ vars.DELEGATION_SET_ID }}
+  TF_VAR_route53_zone: ${{ vars.ROUTE53_ZONE }}
+  TF_VAR_aws_region: ${{ vars.AWS_REGION }}
 jobs:
   tofu:
     runs-on: ubuntu-latest
