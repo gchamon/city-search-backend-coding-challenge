@@ -70,10 +70,20 @@ class AppTestCase(unittest.TestCase):
     def tearDown(self):
         self.ctx.pop()
 
-    def test_home(self):
+    def test_suggestions_kirk(self):
         response = self.client.get("/suggestions?q=Kirk")
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.json, KIRK_EXPECTED)
+
+    def test_suggestions_empty_query(self):
+        response = self.client.get("/suggestions?q=")
+        self.assertEquals(response.status_code, 400)
+        self.assertEquals(response.text, "Empty query q")
+
+    def test_suggestions_missing_city(self):
+        response = self.client.get("/suggestions?q=Azpilicuetagaraycosaroyarenberecolarrea")
+        self.assertEquals(response.status_code, 404)
+        self.assertEquals(response.text, "No matches for query 'Azpilicuetagaraycosaroyarenberecolarrea'")
 
 
 if __name__ == '__main__':
