@@ -106,7 +106,7 @@ module "alb" {
       certificate_arn = module.acm.acm_certificate_arn
 
       fixed_response = {
-        status_code = 404
+        status_code  = 404
         message_body = "not found"
       }
     }
